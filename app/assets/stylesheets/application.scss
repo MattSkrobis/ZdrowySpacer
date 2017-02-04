@@ -1,0 +1,27 @@
+ @import "bootstrap";
+ @import "leaflet";
+
+#map {
+   height: 300px;
+}
+
+path {
+  stroke: steelblue;
+  stroke-width: 3;
+  fill: none;
+}
+.axis path,
+.axis line {
+  fill: none;
+  stroke: grey;
+  stroke-width: 2;
+  shape-rendering: crispEdges;
+}
+
+.hidden {
+  display: none;
+}
+
+.leaflet-pane .leaflet-shadow-pane{
+  display: none;
+}

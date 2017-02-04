@@ -1,0 +1,10 @@
+body
+  h1.text-center
+    | Zdrowy Spacer
+  div#map.centered
+    = map(center: {latlng: [@location.latitude, @location.longitude], zoom: 15},
+     markers: [{latlng: [@location.latitude, @location.longitude],
+     popup: "<div id='location-popup' class='text-center'>"}])
+  div#location-id.hidden
+    = @location.id
+  div.graph.hidden
