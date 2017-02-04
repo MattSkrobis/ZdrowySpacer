@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 20170204101559) do
 
   create_table "testy", force: :cascade do |t|
     t.integer  "pm_25_value"
-    t.integer  "location_id"
+    t.integer  "location_id"  
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "pm_10_value"

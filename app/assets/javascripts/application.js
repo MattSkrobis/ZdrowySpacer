@@ -90,8 +90,4 @@ $(document).ready(function(){
                         }})
 
   }
-
-  // var   "<p>#{@location.name}</p>"/
-    // "<p>Stan na 10.01.2017</p>"/
-    // "<p>Godzina 19:00</br>30µg\/m<sup>3</sup></p></div>"/
 })
