@@ -4,7 +4,7 @@ class MeasurementsController < ApplicationController
   end
 
   def current
-    render json: measurement, serializer: ::MeasurementSerializer, root: false
+    render json: ::MeasurementSerializer.new(measurement).to_json
   end
 
   private
