@@ -1,9 +1,11 @@
 class MeasurementsController < ApplicationController
   def chart_data
+    puts measurements.to_json
     render json: measurements.to_json
   end
 
   def current
+    puts measurement
     render json: measurement, serializer: ::MeasurementSerializer, root: false
   end
 
