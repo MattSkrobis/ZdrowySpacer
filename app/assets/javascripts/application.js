@@ -81,10 +81,12 @@ $(document).ready(function(){
                 dataType: 'json',
                 data: "location_id=" + $('#location-id').html(),
                 success: function (data) {
-                  debugger
-                  $("#location-popup").append("<p></p>")
-                  $("#location-popup").append("<p>Stan na 10.01.2017</p>")
-                  $("#location-popup").append("<p>Godzina 19:00</br>30µg\/m<sup>3</sup></p></div>")
+                  $("#location-popup").empty();
+                  $("#location-popup").append("<p>"+ data.city_name +" - "+data.location_name +"</p>")
+                  $("#location-popup").append("<p>Stan na "+data.date+"</p>")
+                  $("#location-popup").append("<p>Godzina "+data.time+"</p>")
+                  $("#location-popup").append("PM 2.5: "+ data.pm_2_5_value +"µg/m<sup>3</sup></p>")
+                  $("#location-popup").append("PM 10: "+ data.pm_10_value +"µg/m<sup>3</sup></p>")
                         }})
 
   }
