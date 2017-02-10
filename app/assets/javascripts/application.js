@@ -19,6 +19,9 @@ $(document).ready(function(){
   var xAxis = d3.axisBottom(x).ticks(36);
   var yAxis = d3.axisLeft(y);
 
+  var colorMapping = {  'pm_2_5_value' : ["PM 2.5", "violet"],
+					              'pm_10_value' : ["PM 10", "steelblue"]  }
+
   var valueLine = d3.line()
       .x(function(d) { return x(d.date); })
       .y(function(d) { return y(d.value); });
@@ -46,7 +49,7 @@ $(document).ready(function(){
 
                 var maxValue = _.max(_.map(data, 'value'));
 
-                var yScale = (height * 50 / (Math.round(maxValue / 10) * 10));
+                var limitHeight = (height * 50 / (Math.round(maxValue / 10) * 10));
 
                  x.domain(d3.extent(data, function(d) { return d.date; }));
                  y.domain([0, d3.max(data, function(d) { return d.value; })]);
@@ -63,9 +66,9 @@ $(document).ready(function(){
                 svg.append("line")
                     .style("stroke", "red")
                     .attr("x1", 0)
-                    .attr("y1", yScale)
+                    .attr("y1", limitHeight)
                     .attr("x2", 1220)
-                    .attr("y2", yScale);
+                    .attr("y2", limitHeight);
 
                  svg.append("g")
                      .attr("class", "x axis")
@@ -75,6 +78,35 @@ $(document).ready(function(){
                  svg.append("g")
                      .attr("class", "y axis")
                      .call(yAxis);
+
+     	          var legend = svg.append("g")
+     	              .attr("class", "legend")
+     	              .attr("height", 100)
+     	              .attr("width", 100)
+                    .attr('transform', 'translate(-40,-10)');
+
+                legend.selectAll('rect')
+                    .data(dataNest)
+                    .enter()
+                    .append("rect")
+     	              .attr("x", width - 16)
+                    .attr("y", function(d, i){return i * 15;})
+     	              .attr("width", 10)
+     	              .attr("height", 10)
+     	              .style("fill", function(d) {
+                      return colorMapping[d.key][1];
+                    })
+
+                legend.selectAll('text')
+                    .data(dataNest)
+                    .enter()
+                    .append("text")
+                    .attr("class", "legend-text")
+                    .attr("x", width - 2)
+                    .attr("y", function(d, i){ return i * 15 + 9;})
+	                  .text(function(d) {
+                      return colorMapping[d.key][0];
+                    });
       }});
   $($("#map img.leaflet-marker-icon")[0]).on('click', function() {
     $(".graph").toggleClass('hidden')
@@ -84,7 +116,6 @@ $(document).ready(function(){
   var icon_src = $(".leaflet-pane.leaflet-marker-pane img")[0].src
   $(".leaflet-pane.leaflet-marker-pane img")[0].src
           = icon_src.replace('%22)marker-icon.png', '')
-
 
 
   function setPopupText() {
