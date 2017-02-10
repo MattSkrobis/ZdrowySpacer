@@ -38,6 +38,7 @@ gem "bootstrap", "~> 4.0.0.alpha6"
 gem "formtastic-bootstrap", "~> 3.1.0"
 gem 'leaflet-rails'
 gem 'active_model_serializers', '~> 0.10.0'
+gem 'lodash-rails'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

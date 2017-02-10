@@ -4,6 +4,7 @@
 //= require_tree .
 //= require d3
 //= require leaflet
+//= require lodash
 
 $(document).ready(function(){
   var margins = {top: 30, right: 20, bottom: 30, left: 50},
@@ -43,17 +44,28 @@ $(document).ready(function(){
                      d.date = dateParser(d[2]);
                  });
 
+                var maxValue = _.max(_.map(data, 'value'));
+
+                var yScale = (height * 50 / (Math.round(maxValue / 10) * 10));
+
                  x.domain(d3.extent(data, function(d) { return d.date; }));
                  y.domain([0, d3.max(data, function(d) { return d.value; })]);
                    var dataNest = d3.nest()
                        .key(function(d) {return d.symbol;})
                        .entries(data);
 
-                   dataNest.forEach(function(d) {
+                   _.forEach(dataNest, function(d, index) {
                        svg.append("path")
-                           .attr("class", "line")
+                           .attr("class", "data-line-" + index)
                            .attr("d", valueLine (d.values));
                          });
+
+                svg.append("line")
+                    .style("stroke", "red")
+                    .attr("x1", 0)
+                    .attr("y1", yScale)
+                    .attr("x2", 1220)
+                    .attr("y2", yScale);
 
                  svg.append("g")
                      .attr("class", "x axis")
@@ -72,6 +84,8 @@ $(document).ready(function(){
   var icon_src = $(".leaflet-pane.leaflet-marker-pane img")[0].src
   $(".leaflet-pane.leaflet-marker-pane img")[0].src
           = icon_src.replace('%22)marker-icon.png', '')
+
+
 
   function setPopupText() {
     $.ajax({
