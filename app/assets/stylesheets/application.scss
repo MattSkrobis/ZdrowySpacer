@@ -1,8 +1,9 @@
  @import "bootstrap";
  @import "leaflet";
+ @import "font-awesome";
 
 #map {
-   height: 300px;
+   height: 450px;
 }
 
 .data-line-0 {
@@ -13,6 +14,10 @@
 .data-line-1 {
   stroke: steelblue;
   stroke-width: 3;
+}
+
+.leaflet-popup-close-button {
+  display: none;
 }
 
 .legend-text{

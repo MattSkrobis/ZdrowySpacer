@@ -7,14 +7,37 @@
 //= require lodash
 
 $(document).ready(function() {
+
+  var longitude = $('#longitude').html();
+  var latitude = $('#latitude').html();
+
+ var map = L.map('map', {closePopupOnClick: false});
+ map.setView([latitude, longitude], 15);
+ marker = L.marker([latitude, longitude]).addTo(map);
+ marker.bindPopup('<div id=\'location-popup\' class=\'text-center\'>');
+ L.tileLayer('https://api.tiles.mapbox.com/v4/mattskrobis.43e4d029/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWF0dHNrcm9iaXMiLCJhIjoiY2l4bHNzeDFkMDAxcDJ3bnlqamh1emJhdCJ9.47cHuad_oyhd-1xhJ6289w', {
+           attribution: '2017 ®',
+           maxZoom: 18,
+ }).addTo(map);
+
+  $("#location-popup").append(
+    '<div>kot</div><i id="loading-image" class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i>')
+
+      $('#loading-image').bind('ajaxStart', function(){
+        debugger
+        $(this).show();
+      }).bind('ajaxStop', function(){
+        $(this).hide();
+      });
+
   var margins = {
       top: 30,
       right: 20,
       bottom: 30,
       left: 50
     },
-    width = 1280 - margins.left - margins.right,
-    height = 300 - margins.top - margins.bottom;
+    width = window.innerWidth - margins.left - margins.right - 30,
+    height = (window.innerHeight * 0.45) - margins.top - margins.bottom;
 
   var dateParser = d3.timeParse("%Y-%m-%dT%H:%M:%S.%LZ");
 
@@ -58,16 +81,16 @@ $(document).ready(function() {
         d.date = dateParser(d[2]);
       });
 
-      var maxValue = _.max(_.map(data, 'value'));
-
-      var limitHeight = (height * 50 / (Math.round(maxValue / 10) * 10));
+      var maxValue = d3.max(data, function(d) {
+        return d.value;
+      })
 
       x.domain(d3.extent(data, function(d) {
         return d.date;
       }));
-      y.domain([0, d3.max(data, function(d) {
-        return d.value;
-      })]);
+
+      y.domain([0, maxValue]);
+
       var dataNest = d3.nest()
         .key(function(d) {
           return d.symbol;
@@ -83,9 +106,9 @@ $(document).ready(function() {
       svg.append("line")
         .style("stroke", "red")
         .attr("x1", 0)
-        .attr("y1", limitHeight)
-        .attr("x2", 1220)
-        .attr("y2", limitHeight);
+        .attr("y1", y(50))
+        .attr("x2", window.innerWidth - margins.left - margins.right - 30)
+        .attr("y2", y(50));
 
       svg.append("g")
         .attr("class", "x axis")
@@ -135,9 +158,12 @@ $(document).ready(function() {
     setPopupText()
   });
 
+  $($("#map")[0]).on('click', function(e) {
+    e.preventDefault();
+  });
+
   var icon_src = $(".leaflet-pane.leaflet-marker-pane img")[0].src
   $(".leaflet-pane.leaflet-marker-pane img")[0].src = icon_src.replace('%22)marker-icon.png', '')
-
 
   function setPopupText() {
     $.ajax({
@@ -155,6 +181,5 @@ $(document).ready(function() {
         $("#location-popup").append("PM 10: " + data.pm_10_value + "µg/m<sup>3</sup></p>")
       }
     })
-
   }
 })
