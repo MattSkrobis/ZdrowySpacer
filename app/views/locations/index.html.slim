@@ -8,4 +8,8 @@ body
     = @location.longitude
   div#latitude.hidden
     = @location.latitude
+
   div.graph.hidden
+    div
+      | Dane z dni
+      = " #{3.days.ago.strftime('%F')} - #{Date.today.strftime('%F')}"

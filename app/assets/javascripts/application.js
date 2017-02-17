@@ -14,21 +14,13 @@ $(document).ready(function() {
  var map = L.map('map', {closePopupOnClick: false});
  map.setView([latitude, longitude], 15);
  marker = L.marker([latitude, longitude]).addTo(map);
- marker.bindPopup('<div id=\'location-popup\' class=\'text-center\'>');
+ marker.bindPopup("<div id='location-popup' class='text-center'</div>" +
+ "<i id='loading-image' class='fa fa-circle-o-notch fa-spin' style='font-size:24px'></i>"
+ );
  L.tileLayer('https://api.tiles.mapbox.com/v4/mattskrobis.43e4d029/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWF0dHNrcm9iaXMiLCJhIjoiY2l4bHNzeDFkMDAxcDJ3bnlqamh1emJhdCJ9.47cHuad_oyhd-1xhJ6289w', {
            attribution: '2017 ®',
            maxZoom: 18,
  }).addTo(map);
-
-  $("#location-popup").append(
-    '<div>kot</div><i id="loading-image" class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i>')
-
-      $('#loading-image').bind('ajaxStart', function(){
-        debugger
-        $(this).show();
-      }).bind('ajaxStop', function(){
-        $(this).hide();
-      });
 
   var margins = {
       top: 30,
@@ -153,9 +145,12 @@ $(document).ready(function() {
         });
     }
   });
+
   $($("#map img.leaflet-marker-icon")[0]).on('click', function() {
     $(".graph").toggleClass('hidden')
+    $('#loading-image').toggleClass('hidden')
     setPopupText()
+    setHeader
   });
 
   $($("#map")[0]).on('click', function(e) {
