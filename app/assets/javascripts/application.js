@@ -7,9 +7,8 @@
 //= require lodash
 
 $(document).ready(function() {
-
-  var longitude = $('#longitude').html();
-  var latitude = $('#latitude').html();
+ var longitude = $('#longitude').html();
+ var latitude = $('#latitude').html();
 
  var map = L.map('map', {closePopupOnClick: false});
  map.setView([latitude, longitude], 15);
